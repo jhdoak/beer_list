@@ -13,6 +13,6 @@ class _Beer {
 
   double abv;
 
-  @ManagedRelationship(#beer)
+  @ManagedRelationship(#beers)
   Restaurant restaurant;
 }

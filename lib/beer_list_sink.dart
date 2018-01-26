@@ -1,4 +1,5 @@
 import 'beer_list.dart';
+import 'package:beer_list/controller/beer_controller.dart';
 import 'package:beer_list/controller/restaurant_controller.dart';
 
 /// This class handles setting up this application.
@@ -21,7 +22,16 @@ class BeerListSink extends RequestSink {
   /// Configuration of database connections, [HTTPCodecRepository] and other per-isolate resources should be done in this constructor.
   BeerListSink(ApplicationConfiguration appConfig) : super(appConfig) {
     logger.onRecord.listen((rec) => print("$rec ${rec.error ?? ""} ${rec.stackTrace ?? ""}"));
+
+    var dataModel = new ManagedDataModel.fromCurrentMirrorSystem();
+
+    var persistentStore = new PostgreSQLPersistentStore.fromConnectionInfo(
+        "beer", "beer", "localhost", 5432, "beer_list_test");
+
+    context = new ManagedContext(dataModel, persistentStore);
   }
+
+  ManagedContext context;
 
   /// All routes must be configured in this method.
   ///
