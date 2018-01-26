@@ -1,4 +1,5 @@
 import 'beer_list.dart';
+import 'package:beer_list/controller/restaurant_controller.dart';
 
 /// This class handles setting up this application.
 ///
@@ -31,10 +32,12 @@ class BeerListSink extends RequestSink {
     // Prefer to use `pipe` and `generate` instead of `listen`.
     // See: https://aqueduct.io/docs/http/request_controller/
     router
-      .route("/example")
-      .listen((request) async {
-        return new Response.ok({"key": "value"});
-      });
+      .route("/restaurants/[:id]")
+      .generate(() => new RestaurantController());
+
+    router
+      .route("/beers/[:id]")
+      .generate((() => new BeerController()));
   }
 
   /// Final initialization method for this instance.
