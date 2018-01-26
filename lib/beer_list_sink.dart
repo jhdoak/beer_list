@@ -1,5 +1,6 @@
 import 'beer_list.dart';
 import 'package:beer_list/controller/beer_controller.dart';
+import 'package:beer_list/controller/restaurant_beer_controller.dart';
 import 'package:beer_list/controller/restaurant_controller.dart';
 
 /// This class handles setting up this application.
@@ -44,6 +45,10 @@ class BeerListSink extends RequestSink {
     router
       .route("/restaurants/[:id]")
       .generate(() => new RestaurantController());
+
+    router
+      .route("/restaurants/:id/beers")
+      .generate(() => new RestaurantBeerController());
 
     router
       .route("/beers/[:id]")
