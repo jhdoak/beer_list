@@ -60,4 +60,46 @@ Future main() async {
       ]));
   });
 
+  test("/restaurants creates a new restaurant", () async {
+    var request = app.client.request("/restaurants")
+      ..json = {
+        "name": "Test Restaurant",
+        "address": "123 Main Street",
+        "phoneNumber": "(123) 456-7890"
+      };
+
+    expectResponse(
+        await request.post(),
+        200,
+        body: allOf([
+          containsPair("name", "Test Restaurant"),
+          containsPair("address", "123 Main Street"),
+          containsPair("phoneNumber", "(123) 456-7890")
+        ]));
+  });
+
+  test("/restaurants/:id retrieves a newly created restaurant", () async {
+    var request = app.client.request("/restaurants")
+      ..json = {
+        "name": "Test Restaurant",
+        "address": "123 Main Street",
+        "phoneNumber": "(123) 456-7890"
+      };
+
+    var postResponse = await request.post();
+    var createdRestaurantId = postResponse.asMap["id"];
+
+    var getResponse = await app.client.request("/restaurants/$createdRestaurantId").get();
+
+    expectResponse(
+        getResponse,
+        200,
+        body: allOf([
+          containsPair("id", createdRestaurantId),
+          containsPair("name", "Test Restaurant"),
+          containsPair("address", "123 Main Street"),
+          containsPair("phoneNumber", "(123) 456-7890")
+        ]));
+  });
+
 }

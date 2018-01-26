@@ -23,4 +23,16 @@ class RestaurantController extends HTTPController {
         ? new Response.notFound()
         : new Response.ok(restaurant);
   }
+
+  @httpPost
+  Future<Response> createNewRestaurant(@HTTPBody() Restaurant restaurant) async {
+
+    var restaurantQuery = new Query<Restaurant>()
+        ..values = restaurant;
+
+    var insertedRestaurant = await restaurantQuery.insert();
+
+    return new Response.ok(insertedRestaurant);
+
+  }
 }
