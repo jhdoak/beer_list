@@ -11,4 +11,16 @@ class RestaurantController extends HTTPController {
 
     return new Response.ok(restaurants);
   }
+
+  @httpGet
+  Future<Response> getRestaurantById(@HTTPPath("id") int id) async {
+    var restaurantQuery = new Query<Restaurant>()
+        ..where.id = whereEqualTo(id);
+
+    var restaurant = await restaurantQuery.fetchOne();
+
+    return (restaurant == null)
+        ? new Response.notFound()
+        : new Response.ok(restaurant);
+  }
 }

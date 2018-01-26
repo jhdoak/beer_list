@@ -50,10 +50,10 @@ Future main() async {
 
   test("/restaurants/id returns a specific restaurant", () async {
     expectResponse(
-      await app.client.request("/restaurants/2").get(),
+      await app.client.request("/restaurants/3").get(),
       200,
       body: allOf([
-        containsPair("id", 2),
+        containsPair("id", 3),
         containsPair("name", "Murphy's"),
         containsPair("address", "997 Virginia Ave NE, Atlanta, GA 30306"),
         containsPair("phoneNumber", "(404) 872-0904")
