@@ -35,16 +35,29 @@ Future main() async {
   });
 
 
-  test("/restaurants gets all restaurants", () async {
+  test("/restaurants returns all restaurants", () async {
     expectResponse(
       await app.client.request("/restaurants").get(),
       200,
-      body: [{
-        "id": greaterThan(0),
-        "name": isNotEmpty,
-        "address": isString,
-        "phoneNumber": isString
-      }]);
+      body: allOf([
+        hasLength(3),
+        everyElement(containsPair("id", greaterThan(0))),
+        everyElement(containsPair("name", isNotEmpty)),
+        everyElement(containsPair("address", isString)),
+        everyElement(containsPair("phoneNumber", isString))
+      ]));
+  });
+
+  test("/restaurants/id returns a specific restaurant", () async {
+    expectResponse(
+      await app.client.request("/restaurants/2").get(),
+      200,
+      body: allOf([
+        containsPair("id", 2),
+        containsPair("name", "Murphy's"),
+        containsPair("address", "997 Virginia Ave NE, Atlanta, GA 30306"),
+        containsPair("phoneNumber", "(404) 872-0904")
+      ]));
   });
 
 }
