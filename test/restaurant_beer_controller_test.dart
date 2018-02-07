@@ -44,14 +44,16 @@ Future main() async {
         ..values = r;
 
       var insertedRestaurant = await restaurantQuery.insert();
-      
-      await Future.forEach(r.beers, (Beer b) async {
-        var beerQuery = new Query<Beer>()
+
+      if (r.beers != null) {
+        await Future.forEach(r.beers, (Beer b) async {
+          var beerQuery = new Query<Beer>()
             ..values = b
             ..values.restaurant = r;
 
-        await beerQuery.insert();
-      });
+          await beerQuery.insert();
+        });
+      }
 
       return insertedRestaurant;
     });
@@ -74,6 +76,20 @@ Future main() async {
           everyElement(containsPair("name", isNotEmpty)),
           everyElement(containsPair("abv", isDouble))
         ]));
+  });
+
+  test("posting to /restaurants/id/beers creates a beer for given restaurant", () async {
+
+    var beerRequest = app.client.request("/restaurants/1/beers")
+        ..json = {
+          "brand": "Lienenkugel",
+          "name": "Summer Shandy",
+          "abv": 5.0
+        };
+
+    var beerResult = await beerRequest.post();
+
+    
   });
 
 }

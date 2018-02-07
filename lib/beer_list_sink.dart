@@ -27,7 +27,7 @@ class BeerListSink extends RequestSink {
     var dataModel = new ManagedDataModel.fromCurrentMirrorSystem();
 
     var persistentStore = new PostgreSQLPersistentStore.fromConnectionInfo(
-        "beer", "beer", "localhost", 5432, "beer_list_test");
+        "beer_list_user", "beer_list_user", "localhost", 5432, "beer_list");
 
     context = new ManagedContext(dataModel, persistentStore);
   }
